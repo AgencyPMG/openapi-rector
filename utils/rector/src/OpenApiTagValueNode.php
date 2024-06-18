@@ -94,8 +94,9 @@ class OpenApiTagValueNode
 
                     // request body wants `content` as the ref, so handle that first
                     $isModel = 'Nelmio\\ApiDocBundle\\Annotation\\Model' === $itemClass;
-                    $isRequestBody = $attributeClass === 'OpenApi\\Attributes\\RequestBody';
-                    if ($isRequestBody && 'content' === $name && $isModel) {
+                    $needsContent = $attributeClass === 'OpenApi\\Attributes\\RequestBody'
+                        || $attributeClass === 'OpenApi\\Attributes\\Response';
+                    if ($needsContent && 'content' === $name && $isModel) {
                         $newValues[$name] = new ArrayItemNode(
                             new OpenApiTagValueNode($item->value),
                             $name,
@@ -103,7 +104,7 @@ class OpenApiTagValueNode
                             $item->kindKeyQuoted
                         );
                         break;
-                    } elseif (!$isRequestBody && 'ref' === $name && $isModel) {
+                    } elseif (!$needsContent && 'ref' === $name && $isModel) {
                         $newValues[$name] = new ArrayItemNode(
                             new OpenApiTagValueNode($item->value),
                             $name,
