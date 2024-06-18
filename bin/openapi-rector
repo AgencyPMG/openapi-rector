@@ -2,7 +2,8 @@
 
 #set -x
 
-dir=$(dirname $(realpath -P $0))
-composer require zircote/swagger-php:^4.0 --dev
-php $dir/fix-api-spec.php
-php $dir/../vendor/bin/rector process src/application --config $dir/../rector.php
+dir=$(dirname $(realpath $0))
+#composer require zircote/swagger-php:^4.0 --dev
+echo $dir
+#php $dir/fix-api-spec.php
+php $dir/../vendor/bin/rector process src --config $dir/../rector.php
